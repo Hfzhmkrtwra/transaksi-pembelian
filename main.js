@@ -54,5 +54,22 @@ export async function tambahBarangKeKeranjang(
   idpelanggan,
   namapelanggan
 ) {
-
+  try {
+    // Menyimpan data ke collection transaksi 
+    const refDokumen = await addDoc(collection(basisdata, "transaksi"), {
+      idbarang: idbarang,
+      nama: nama,
+      harga: harga,
+      jumlah: jumlah,
+      idpelanggan: idpelanggan,
+      namapelanggan: namapelanggan
+      })
+   
+  
+    // Menampilkan pesan berhasil
+    console.log("Berhasil menyimpan keranjang")
+  } catch (error) {
+    // Menampilkan pesan error
+    console.log(error)
+  }
 }

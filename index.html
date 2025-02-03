@@ -14,8 +14,8 @@
 
 <body class="m-3">
   <h1 class="text-center">Toko Incer</h1>
-  
-  <h4>Pilih Barang</h4>
+
+  <h3>Pilih Barang</h3>
 
   <table class="table table-striped-columns table-bordered border-success" id="daftar-barang">
     <thead class="table-success">
@@ -29,34 +29,61 @@
     <tbody>
     </tbody>
   </table>
-  
-  <script type="module">
-    import { ambilDaftarBarang } from './main.js';
 
+  <h3>Keranjang Belanja</h3>
+  <table class="table table-striped-columns table-bordered border-success" id="daftar-keranjang">
+    <thead class="table-success">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Item</th>
+        <th scope="col">Harga</th>
+        <th scope="col">Jumlah</th>
+        <th scope="col">Hapus Dari keranjang</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script type="module">
+    import { ambilDaftarBarang, tambahBarangKeKeranjang } from './main.js';
+
+//menampilkan daftar barang
     $(document).ready(async function() {
       let elemenDaftarBarang = $("#daftar-barang > tbody");
       let daftarBarang = await ambilDaftarBarang();
 
-      let nomor = 1 
+      let nomor = 1
       let total = 0
-    
+
       daftarBarang.forEach((data) => {
         elemenDaftarBarang.append(
           "<tr>" +
           "<td>" + nomor + "</td>" +
           "<td>" + data.item + "</td>" +
           "<td>" + data.harga + "</td>" +
-          "<td>" + "<a href='#' class='me-2 link-keranjang' data='" + data.id + "'><i class='bi bi-cart-plus'></i></a>" + "</td>" +
+          "<td>" + "<a href='#' class='me-2 link-keranjang' data='" + data.id + "' data-nama='" + data.item + "' data-harga='" + data.harga + "'><i class='bi bi-cart-plus'></i></a>" + "</td>" +
           "</tr>"
         )
-        
+
         nomor = nomor + 1
       })
-     
 
-    $(".link-keranjang").click(async function() {
-       console.log('menambah barang ke keranjang')
-    })
+
+      $(".link-keranjang").click(async function() {
+        let idbarang = $(this).attr('data')
+        let nama = $(this).attr('data-nama')
+        let harga = $(this).attr('data-harga')
+        let jumlah = 1
+        let idpelanggan = 'prosee'
+        let namapelanggan = 'proses'
+
+        await tambahBarangKeKeranjang(idbarang, nama, harga, jumlah, idpelanggan, namapelanggan)
+
+        console.log('menambah barang ke keranjang')
+      })
+      
+      //menampilkan data barang yang ada di keranjang 
 
     })
   </script>
