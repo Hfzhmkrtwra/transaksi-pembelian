@@ -44,3 +44,15 @@ export async function ambilDaftarBarang() {
 
   return hasilKueri;
 }
+
+//Menambah barang ke keranjang 
+export async function tambahBarangKeKeranjang(
+  idbarang,
+  nama,
+  harga,
+  jumlah,
+  idpelanggan,
+  namapelanggan
+) {
+
+}
