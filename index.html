@@ -1,22 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Toko Incer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-  <title>HTML</title>
-  
-  <!-- HTML -->
-  
-
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <p>Nothing to see here...</p>
-  <!-- Project -->
-  <script src="main.js"></script>
+  <h1>Toko Incer</h1>
+  
+  <h3>Pilih Barang</h3>
+
+  <table class="table table-striped-columns table-bordered border-success" id="daftar-barang">
+    <thead class="table-success">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Item</th>
+        <th scope="col">Harga</th>
+        <th scope="col">Masukkan keranjang</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  
+  <script type="module">
+    import { ambilDaftarBarang } from './main.js';
+
+    $(document).ready(async function() {
+      let elemenDaftarBarang = $("#daftar-barang > tbody");
+      let daftarBarang = await ambilDaftarBarang();
+
+      let nomor = 1 
+      let total = 0
+    
+      daftarBarang.forEach((data) => {
+        elemenDaftarBarang.append(
+          "<tr>" +
+          "<td>" + nomor + "</td>" +
+          "<td>" + data.item + "</td>" +
+          "<td>" + data.harga + "</td>" +
+          "<td>" + "<a href='#' class='me-2 link-keranjang' data='" + data.id + "'>masukkan</a>" + "</td>" +
+          "</tr>"
+        )
+        
+        nomor = nomor + 1
+      })
+     
+
+    $(".link-keranjang").click(async function() {
+       console.log('menambah barang ke keranjang')
+    })
+
+    })
+  </script>
 </body>
+
 </html>
