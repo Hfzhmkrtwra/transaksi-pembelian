@@ -45,6 +45,26 @@ export async function ambilDaftarBarang() {
   return hasilKueri;
 }
 
+//Menambahkan barang di keranjang 
+export async function ambilDaftarBarangDiKeranjang() {
+  const refDokumen = collection(basisdata, "transaksi");
+  const kueri = query(refDokumen, orderBy("nama"));
+  const cuplikanKueri = await getDocs(kueri);
+
+  let hasilKueri = [];
+  cuplikanKueri.forEach((dokumen) => {
+    hasilKueri.push({
+      id: dokumen.id,
+      item: dokumen.data().item,
+      jumlah: dokumen.data().jumlah,
+      harga: dokumen.data().harga
+    })
+  })
+
+  return hasilKueri;
+}
+
+
 //Menambah barang ke keranjang 
 export async function tambahBarangKeKeranjang(
   idbarang,
