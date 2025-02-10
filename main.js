@@ -55,7 +55,7 @@ export async function ambilDaftarBarangDiKeranjang() {
   cuplikanKueri.forEach((dokumen) => {
     hasilKueri.push({
       id: dokumen.id,
-      item: dokumen.data().item,
+      nama: dokumen.data().nama,
       jumlah: dokumen.data().jumlah,
       harga: dokumen.data().harga
     })
@@ -83,9 +83,9 @@ export async function tambahBarangKeKeranjang(
       jumlah: jumlah,
       idpelanggan: idpelanggan,
       namapelanggan: namapelanggan
-      })
-   
-  
+    })
+
+
     // Menampilkan pesan berhasil
     console.log("Berhasil menyimpan keranjang")
   } catch (error) {
