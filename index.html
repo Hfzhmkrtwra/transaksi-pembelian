@@ -54,6 +54,32 @@
 
     //menampilkan daftar barang
     $(document).ready(async function() {
+      async function tampilBarangDiKeranjang() {
+        // menampilkan data barang yang ada di keranjang 
+        let elemenDaftarBarangDiKeranjang = $("#daftar-keranjang > tbody")
+        let daftarBarangDiKeranjang = await ambilDaftarBarangDiKeranjang()
+        let nomorKeranjang = 1
+        let totalKeranjang = 0
+
+        // Mengosongkan daftar barang sebelumnya 
+        elemenDaftarBarangDiKeranjang.empty()
+
+        daftarBarangDiKeranjang.forEach((data) => {
+          elemenDaftarBarangDiKeranjang.append(
+            "<tr>" +
+            "<td>" + nomorKeranjang + "</td>" +
+            "<td>" + data.nama + "</td>" +
+            "<td>" + data.harga + "</td>" +
+            "<td>" + data.jumlah + "</td>" +
+            "<td>" + "link.hapus" + "</td>" +
+            "</tr>"
+          )
+
+          nomorKeranjang++
+        })
+        // Selesai menampilkan barang di keranjang 
+      }
+
       let elemenDaftarBarang = $("#daftar-barang > tbody");
       let daftarBarang = await ambilDaftarBarang();
 
@@ -73,6 +99,10 @@
         nomor = nomor + 1
       })
 
+      // Selesai menampilkan barang di inventory 
+
+      await tampilBarangDiKeranjang()
+
 
       $(".link-keranjang").click(async function() {
         let idbarang = $(this).attr('data')
@@ -86,30 +116,7 @@
 
         console.log('menambah barang ke keranjang')
 
-        // menampilkan data barang yang ada di keranjang 
-        let elemenDaftarBarangDiKeranjang = $("#daftar-keranjang > tbody")
-        let daftarBarangDiKeranjang = await ambilDaftarBarangDiKeranjang()
-        let nomorKeranjang = 1
-        let totalKeranjang = 0
-        
-        // Mengosongkan daftar barang sebelumnya 
-        elemenDaftarBarangDiKeranjang.empty()
-
-        daftarBarangDiKeranjang.forEach((data) => {
-          elemenDaftarBarangDiKeranjang.append(
-            "<tr>" +
-            "<td>" + nomorKeranjang + "</td>" +
-            "<td>" + data.nama + "</td>" +
-            "<td>" + data.harga + "</td>" +
-            "<td>" + data.jumlah + "</td>" +
-            "<td>" + "link.hapus" + "</td>" +
-            "</tr>"
-          )
-
-          nomorKeranjang++
-        })
-
-
+        await tampilBarangDiKeranjang()
       })
 
     })
