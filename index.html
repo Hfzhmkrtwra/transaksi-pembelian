@@ -30,7 +30,7 @@
     </tbody>
   </table>
 
-  <h3>Keranjang Belanja</h3>
+  <h3 id="keranjang-">Keranjang Belanja</h3>
   <table class="table table-striped-columns table-bordered border-success" id="daftar-keranjang">
     <thead class="table-success">
       <tr>
@@ -71,7 +71,7 @@
             "<td>" + data.nama + "</td>" +
             "<td>" + data.harga + "</td>" +
             "<td>" + data.jumlah + "</td>" +
-            "<td>" + "link.hapus" + "</td>" +
+            "<td>" + "<i class='bi bi-trash'></i>" + "</td>" +
             "</tr>"
           )
 
@@ -92,7 +92,7 @@
           "<td>" + nomor + "</td>" +
           "<td>" + data.item + "</td>" +
           "<td>" + data.harga + "</td>" +
-          "<td>" + "<a href='#' class='me-2 link-keranjang' data='" + data.id + "' data-nama='" + data.item + "' data-harga='" + data.harga + "'><i class='bi bi-cart-plus'></i></a>" + "</td>" +
+          "<td>" + "<a href='#keranjang' class='me-2 link-keranjang' data='" + data.id + "' data-nama='" + data.item + "' data-harga='" + data.harga + "'><i class='bi bi-cart-plus'></i></a>" + "</td>" +
           "</tr>"
         )
 
