@@ -123,3 +123,7 @@ export async function tambahBarangKeKeranjang(
     console.log(error)
   }
 }
+
+export async function hapusBarangDariKeranjang(id) {
+  await deleteDoc(doc(basisdata, "transaksi", id))
+}

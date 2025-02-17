@@ -49,7 +49,8 @@
     import {
       ambilDaftarBarang,
       tambahBarangKeKeranjang,
-      ambilDaftarBarangDiKeranjang
+      ambilDaftarBarangDiKeranjang,
+      hapusBarangDariKeranjang
     } from './main.js';
 
     //menampilkan daftar barang
@@ -71,7 +72,7 @@
             "<td>" + data.nama + "</td>" +
             "<td>" + data.harga + "</td>" +
             "<td>" + data.jumlah + "</td>" +
-            "<td>" + "<i class='bi bi-trash'></i>" + "</td>" +
+            "<td>" + "<a href ='#' class='link-hapus' data='" + data.id + "'><i class='bi bi-trash'></i></a>" + "</td>" +
             "</tr>"
           )
 
@@ -118,6 +119,15 @@
 
         await tampilBarangDiKeranjang()
       })
+
+      // Menghapus item dari keranjang
+      $(".link-hapus").click(async function() {
+        if (confirm("Apakah benar mau menghapus?")) {
+          await hapusBarangDariKeranjang($(this).attr('data'))
+          location.reload()
+        }
+      })
+
 
     })
   </script>
