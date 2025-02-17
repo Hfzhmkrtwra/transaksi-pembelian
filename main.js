@@ -9,7 +9,8 @@ import {
   deleteDoc,
   updateDoc,
   query,
-  orderBy
+  orderBy,
+  where
 } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -64,6 +65,8 @@ export async function ambilDaftarBarangDiKeranjang() {
   return hasilKueri;
 }
 
+// kalau sudah ada tambahkan jumlahnya saja
+
 
 //Menambah barang ke keranjang 
 export async function tambahBarangKeKeranjang(
@@ -75,15 +78,42 @@ export async function tambahBarangKeKeranjang(
   namapelanggan
 ) {
   try {
-    // Menyimpan data ke collection transaksi 
-    const refDokumen = await addDoc(collection(basisdata, "transaksi"), {
-      idbarang: idbarang,
-      nama: nama,
-      harga: harga,
-      jumlah: jumlah,
-      idpelanggan: idpelanggan,
-      namapelanggan: namapelanggan
+
+    // periksa apakah id barang sudah ada ei collection transaksi?
+
+    // Mengambil data di seluruh collection transaksi 
+    let refDokumen = collection(basisdata, "transaksi")
+
+    // Membuat query untuk mencari data berdasarkan id barang
+    let queryBarang = query(refDokumen, where("idbarang", "==", idbarang))
+
+    let snapshotBarang = await getDocs(queryBarang)
+    let jumlahRecord = 0
+    let idtransaksi = ''
+    let jumlahSebelumnya = 0
+
+    snapshotBarang.forEach((dokumen) => {
+      jumlahRecord++
+      idtransaksi = dokumen.id
+      jumlahSebelumnya = dokumen.data().jumlah
     })
+
+    if (jumlahRecord == 0) {
+      // kalau belum ada, tambahkan langsung ke collection
+      const refDokumen = await addDoc(collection(basisdata, "transaksi"), {
+        idbarang: idbarang,
+        nama: nama,
+        harga: harga,
+        jumlah: jumlah,
+        idpelanggan: idpelanggan,
+        namapelanggan: namapelanggan
+      })
+
+    } else if (jumlahRecord == 1) {
+      // Kalau sudah ada, tambahkan jumlahnya saja
+      jumlahSebelumnya++
+      await updateDoc(doc(basisdata, "transaksi", idtransaksi), { jumlah: jumlahSebelumnya })
+    }
 
 
     // Menampilkan pesan berhasil
