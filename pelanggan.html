@@ -15,20 +15,7 @@
 <body class="m-3">
   <h1 class="text-center">Toko Incer</h1>
 
-  <h3>Pilih Barang</h3>
-
-  <table class="table table-striped-columns table-bordered border-success" id="daftar-barang">
-    <thead class="table-success">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Item</th>
-        <th scope="col">Harga</th>
-        <th scope="col">Masukkan keranjang</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+  <a href="index.html" class="btn btn-success">Kembali Ke Daftar Barang</a>
 
   <h3 id="keranjang-">Keranjang Belanja</h3>
   <table class="table table-striped-columns table-bordered border-success" id="daftar-keranjang">
@@ -45,17 +32,12 @@
     </tbody>
   </table>
 
-  <a href="pelanggan.html" class="btn btn-success">Pilih Pelanggan</a>
-
   <script type="module">
     import {
-      ambilDaftarBarang,
-      tambahBarangKeKeranjang,
       ambilDaftarBarangDiKeranjang,
       hapusBarangDariKeranjang
     } from './main.js';
 
-    //menampilkan daftar barang
     $(document).ready(async function() {
       async function tampilBarangDiKeranjang() {
         // menampilkan data barang yang ada di keranjang 
@@ -83,55 +65,18 @@
         // Selesai menampilkan barang di keranjang 
       }
 
-      let elemenDaftarBarang = $("#daftar-barang > tbody");
-      let daftarBarang = await ambilDaftarBarang();
-
-      let nomor = 1
-      let total = 0
-
-      daftarBarang.forEach((data) => {
-        elemenDaftarBarang.append(
-          "<tr>" +
-          "<td>" + nomor + "</td>" +
-          "<td>" + data.item + "</td>" +
-          "<td>" + data.harga + "</td>" +
-          "<td>" + "<a href='#keranjang' class='me-2 link-keranjang' data='" + data.id + "' data-nama='" + data.item + "' data-harga='" + data.harga + "'><i class='bi bi-cart-plus'></i></a>" + "</td>" +
-          "</tr>"
-        )
-
-        nomor = nomor + 1
-      })
-
-      // Selesai menampilkan barang di inventory 
-
       await tampilBarangDiKeranjang()
 
-
-      $(".link-keranjang").click(async function() {
-        let idbarang = $(this).attr('data')
-        let nama = $(this).attr('data-nama')
-        let harga = $(this).attr('data-harga')
-        let jumlah = 1
-        let idpelanggan = 'proses'
-        let namapelanggan = 'proses'
-
-        await tambahBarangKeKeranjang(idbarang, nama, harga, jumlah, idpelanggan, namapelanggan)
-
-        console.log('menambah barang ke keranjang')
-
-        await tampilBarangDiKeranjang()
-      })
-
-      // Menghapus item dari keranjang
-
-       $("#daftar-keranjang > tbody").on('click', '.link-hapus', async function() {
+      $("#daftar-keranjang > tbody").on('click', '.link-hapus', async function() {
         await hapusBarangDariKeranjang($(this).attr('data'))
-        
+
         // refresh halaman
         location.reload()
       })
+
     })
   </script>
+
 </body>
 
 </html>
