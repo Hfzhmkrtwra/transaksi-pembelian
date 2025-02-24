@@ -121,11 +121,12 @@
       })
 
       // Menghapus item dari keranjang
-      $(".link-hapus").click(async function() {
+      $("#daftar-keranjang > tbody").on ('click', '.link-hapus'(async function() {
         if (confirm("Apakah benar mau menghapus?")) {
           await hapusBarangDariKeranjang($(this).attr('data'))
           location.reload()
-        }
+       
+       })
       })
 
 
