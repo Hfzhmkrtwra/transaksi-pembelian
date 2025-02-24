@@ -127,3 +127,21 @@ export async function tambahBarangKeKeranjang(
 export async function hapusBarangDariKeranjang(id) {
   await deleteDoc(doc(basisdata, "transaksi", id))
 }
+
+export async function ambilDaftarPelanggan() {
+  const refDokumen = collection(basisdata, "pelanggan3");
+  const kueri = query(refDokumen, orderBy("nama"));
+  const cuplikanKueri = await getDocs(kueri);
+
+  let hasilKueri = [];
+  cuplikanKueri.forEach((dokumen) => {
+    hasilKueri.push({
+      id: dokumen.id,
+      nama: dokumen.data().nama,
+      alamat: dokumen.data().alamat,
+      nohape: dokumen.data().nohape
+    })
+  })
+
+  return hasilKueri;
+}

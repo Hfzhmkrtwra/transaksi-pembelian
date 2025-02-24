@@ -31,15 +31,15 @@
     <tbody>
     </tbody>
   </table>
-  
-    <h3 id="keranjang-">Keranjang Belanja</h3>
-  <table class="table table-striped-columns table-bordered border-success" id="daftar-keranjang">
-    <thead class="table-success">
+
+  <h3>Pelanggan</h3>
+  <table class="table table-striped-columns table-bordered border-primary" id="daftar-pelanggan">
+    <thead class="table-primary">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Nama</th>
-        <th scope="col">No.HP</th>
         <th scope="col">Alamat</th>
+        <th scope="col">No.HP</th>
         <th scope="col">Aksi</th>
       </tr>
     </thead>
@@ -50,7 +50,8 @@
   <script type="module">
     import {
       ambilDaftarBarangDiKeranjang,
-      hapusBarangDariKeranjang
+      hapusBarangDariKeranjang,
+      ambilDaftarPelanggan
     } from './main.js';
 
     $(document).ready(async function() {
@@ -88,6 +89,28 @@
         // refresh halaman
         location.reload()
       })
+
+      let elemenDaftarPelanggan = $("#daftar-pelanggan > tbody");
+      let daftarPelanggan = await ambilDaftarPelanggan();
+
+      let nomor = 1
+
+      daftarPelanggan.forEach((data) => {
+        elemenDaftarPelanggan.append(
+          "<tr>" +
+          "<td>" + nomor + "</td>" +
+          "<td>" + data.nama + "</td>" +
+          "<td>" + data.alamat + "</td>" +
+          "<td>" + data.nohape + "</td>" +
+          "<td>" + "<a href='#' class=' me-2 link-ubah' data='" + data.id + "'>ubah</a> <button class='btn btn-primary tombol-pilih' data='" + data.id + "'>pilih</button>" + "</td>" +
+          "</tr>"
+        )
+
+        nomor = nomor + 1
+
+        $('#jumlahpelanggan').html("jumlah Pelanggan : " + (nomor - 1))
+      })
+
 
     })
   </script>
