@@ -102,7 +102,7 @@
           "<td>" + data.nama + "</td>" +
           "<td>" + data.alamat + "</td>" +
           "<td>" + data.nohape + "</td>" +
-          "<td>" + "<a href='#' class=' me-2 link-ubah' data='" + data.id + "'>ubah</a> <button class='btn btn-primary tombol-pilih' data='" + data.id + "'>pilih</button>" + "</td>" +
+          "<td>" + "<a href='#' class=' me-2 link-ubah' data='" + data.id + "'>ubah</a> <button class='btn btn-primary tombol-pilih' data='" + data.id + "' data-nama='" + data.nama + "'>pilih</button>" + "</td>" +
           "</tr>"
         )
 
@@ -111,7 +111,17 @@
         $('#jumlahpelanggan').html("jumlah Pelanggan : " + (nomor - 1))
       })
 
-
+      $(".tombol-pilih").click(async function() {
+        // Mengambil data pelanggan 
+        let idpelanggan = $(this).attr('data')
+        let namapelanggan = $(this).attr('data-nama') 
+        
+        // Cari Data collection transaksi yang id dan nama pelanggan = proses
+        
+        // Update data di collection transaksi tersebut 
+        // Pergi ke halaman cetak nota
+      })
+      // Selesai Memilih Pelanggan 
     })
   </script>
 
