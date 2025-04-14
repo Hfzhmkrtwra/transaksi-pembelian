@@ -32,7 +32,7 @@ export async function ambilDaftarBarang() {
   const refDokumen = collection(basisdata, "inventory");
   const kueri = query(refDokumen, orderBy("item"));
   const cuplikanKueri = await getDocs(kueri);
-
+  
   let hasilKueri = [];
   cuplikanKueri.forEach((dokumen) => {
     hasilKueri.push({
@@ -42,7 +42,7 @@ export async function ambilDaftarBarang() {
       harga: dokumen.data().harga
     })
   })
-
+  
   return hasilKueri;
 }
 
@@ -51,7 +51,7 @@ export async function ambilDaftarBarangDiKeranjang() {
   const refDokumen = collection(basisdata, "transaksi");
   const kueri = query(refDokumen, orderBy("nama"));
   const cuplikanKueri = await getDocs(kueri);
-
+  
   let hasilKueri = [];
   cuplikanKueri.forEach((dokumen) => {
     hasilKueri.push({
@@ -61,7 +61,7 @@ export async function ambilDaftarBarangDiKeranjang() {
       harga: dokumen.data().harga
     })
   })
-
+  
   return hasilKueri;
 }
 
@@ -78,26 +78,26 @@ export async function tambahBarangKeKeranjang(
   namapelanggan
 ) {
   try {
-
+    
     // periksa apakah id barang sudah ada ei collection transaksi?
-
+    
     // Mengambil data di seluruh collection transaksi 
     let refDokumen = collection(basisdata, "transaksi")
-
+    
     // Membuat query untuk mencari data berdasarkan id barang
     let queryBarang = query(refDokumen, where("idbarang", "==", idbarang))
-
+    
     let snapshotBarang = await getDocs(queryBarang)
     let jumlahRecord = 0
     let idtransaksi = ''
     let jumlahSebelumnya = 0
-
+    
     snapshotBarang.forEach((dokumen) => {
       jumlahRecord++
       idtransaksi = dokumen.id
       jumlahSebelumnya = dokumen.data().jumlah
     })
-
+    
     if (jumlahRecord == 0) {
       // kalau belum ada, tambahkan langsung ke collection
       const refDokumen = await addDoc(collection(basisdata, "transaksi"), {
@@ -108,14 +108,14 @@ export async function tambahBarangKeKeranjang(
         idpelanggan: idpelanggan,
         namapelanggan: namapelanggan
       })
-
+      
     } else if (jumlahRecord == 1) {
       // Kalau sudah ada, tambahkan jumlahnya saja
       jumlahSebelumnya++
       await updateDoc(doc(basisdata, "transaksi", idtransaksi), { jumlah: jumlahSebelumnya })
     }
-
-
+    
+    
     // Menampilkan pesan berhasil
     console.log("Berhasil menyimpan keranjang")
   } catch (error) {
@@ -132,7 +132,7 @@ export async function ambilDaftarPelanggan() {
   const refDokumen = collection(basisdata, "pelanggan3");
   const kueri = query(refDokumen, orderBy("nama"));
   const cuplikanKueri = await getDocs(kueri);
-
+  
   let hasilKueri = [];
   cuplikanKueri.forEach((dokumen) => {
     hasilKueri.push({
@@ -142,16 +142,16 @@ export async function ambilDaftarPelanggan() {
       nohape: dokumen.data().nohape
     })
   })
-
+  
   return hasilKueri;
 }
 
 export async function ambilBarangProsesDiKeranjang() {
   let refDokumen = collection(basisdata, "transaksi")
-
+  
   // Membuat query untuk mencari data yg masih proses 
   let queryBarangProses = query(refDokumen, where("idpelanggan", "==", "proses"))
-
+  
   let snapshotBarang = await getDocs(queryBarangProses)
   let hasilKueri = []
   snapshotBarang.forEach((dokumen) => {
@@ -164,5 +164,20 @@ export async function ambilBarangProsesDiKeranjang() {
       namapelanggan: dokumen.data().namapelanggan
     })
   })
+  return hasilKueri
+}
 
+export async function ubahBarangProsesDiKeranjang(id, idpelanggan, namapelanggan) {
+  
+    await updateDoc(
+    doc(basisdata, "transaksi", id), { idpelanggan: idpelanggan, namapelanggan: namapelanggan }
+   )
+ 
+}
+
+export async function ambilpelanggan(id) {
+  const refDokumen = await doc(basisdata, "pelanggan3", id)
+  const snapshotDokumen = await getDoc(refDokumen)
+  
+  return await snapshotDokumen.data()
 }
