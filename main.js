@@ -169,10 +169,10 @@ export async function ambilBarangProsesDiKeranjang() {
 
 export async function ubahBarangProsesDiKeranjang(id, idpelanggan, namapelanggan) {
   
-    await updateDoc(
+  await updateDoc(
     doc(basisdata, "transaksi", id), { idpelanggan: idpelanggan, namapelanggan: namapelanggan }
-   )
- 
+  )
+  
 }
 
 export async function ambilpelanggan(id) {
@@ -180,4 +180,29 @@ export async function ambilpelanggan(id) {
   const snapshotDokumen = await getDoc(refDokumen)
   
   return await snapshotDokumen.data()
+}
+
+
+
+export async function daftarBarangNotaPelanggan(idpelanggan)
+{
+  let refDokumen = collection(basisdata, "transaksi")
+  
+  // membuat query untuk mencari data pelanga
+  let queryBarangProses = query(refDokumen, where("idpelanggan", "==", idpelanggan))
+  
+  let snapshotBarang = await getDocs(queryBarangProses)
+  let hasilKueri = []
+  snapshotBarang.forEach((dokumen) => {
+    hasilKueri.push({
+      id: dokumen.id,
+      nama: dokumen.data().nama,
+      jumlah: dokumen.data().jumlah,
+      harga: dokumen.data().harga,
+      idpelanggan: dokumen.data().idpelanggan,
+      namapelanggan: dokumen.data().namapelanggan,
+    })
+  })
+  
+  return hasilKueri
 }

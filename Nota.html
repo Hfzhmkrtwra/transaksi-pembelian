@@ -10,6 +10,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body class="m-3">
@@ -17,9 +19,29 @@
   
   <h4>NOTA PEMBELIAN ATAS NAMA <span id="namapelanggan"></span></h4>
   
+  <!-- tampilkan tabel daftar barang di collection transaksi -->
+  <table class="table table-striped-columns table-bordered border-primary" id="daftar-keranjang">
+    <thead class="table-primary">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Item</th>
+        <th scope="col">Harga</th>
+        <th scope="col">Jumlah</th>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  
+  <h4>Grand Total : <span id="total"></span></h4>
+  
+  <button class="btn btn-success" id="cetak">Cetak Nota</button>
+  
+  
   <script type="module">
     // Import fungsi yang diperlukan 
-    import { ambilpelanggan } from './main.js'
+    import { ambilpelanggan, daftarBarangNotaPelanggan } from './main.js'
     
     $(document).ready(async function() {
       const queryString = window.location.search
@@ -29,6 +51,41 @@
       // Tampilkan nama pelanggan 
       const pelanggan = await ambilpelanggan(id)
       $("#namapelanggan").html(pelanggan.nama)
+      
+      // menampilkan daftar barang yang ada di keranjang
+      let elemenDaftarBarangDiKeranjang = $("#daftar-keranjang > tbody")
+      let daftarBarangDiKeranjang = await daftarBarangNotaPelanggan(id)
+      let nomorKeranjang = 1
+      let totalKeranjang = 0
+      
+      // mengosongkan daftar barang sebelumnya
+      elemenDaftarBarangDiKeranjang.empty()
+      
+      daftarBarangDiKeranjang.forEach((data) => {
+        elemenDaftarBarangDiKeranjang.append(
+          "<tr>" +
+          "<td>" + nomorKeranjang + "</td>" +
+          "<td>" + data.nama + "</td>" +
+          "<td>" + data.harga + "</td>" +
+          "<td>" + data.jumlah + "</td>" +
+          "<td>" + (data.harga * data.jumlah) + "</td>" +
+          "</tr>"
+        )
+        
+        nomorKeranjang++
+        totalKeranjang = totalKeranjang + (data.harga * data.jumlah)
+      })
+      // selesai menampilkan barang di keranjang
+      
+      $('#total').html(totalKeranjang)
+      
+      $('#cetak').click(function() {
+        // tentukan elemen html yang akan dibuat jadi pdf
+        let elemenNota = document.getElementById('daftar-keranjang')
+        
+        // panggil fungsi html2pdf dengan parameter elemen html sebelumnya
+        html2pdf(elemenNota)
+      })
       
       
       
